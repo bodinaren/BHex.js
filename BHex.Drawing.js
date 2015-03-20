@@ -113,7 +113,7 @@ BHex.Drawing.Drawing.getCenter = function (axial, options) {
 		x = (c.x + c.z / 2) * options.width;
 		y = c.z * options.height * 3/4;
 	}
-	console.log(x + " x " + y);
+	
 	return new BHex.Drawing.Point(x, y);
 };
 
