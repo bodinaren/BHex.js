@@ -267,17 +267,6 @@ BHex.Grid.prototype.getRange = function (start, movement) {
  */
 BHex.Grid.prototype.findPath = function (start, end) {
 	var grid = this,
-	
-		/**
-		 * Backtrack the path from a particular node, and return the full path.
-		 * @private
-		 * @param {BHex.Grid.Search.Node} node - The node from where to backtrack the path.
-		 * @returns {BHex.Hexagon[]} The path from the first hex to the last hex.
-		 */
-		pathTo = function (node) {
-			
-		},
-		
 		openHeap = new BHex.Grid.Search.Heap(),
 		closedHexes = {},
 		visitedNodes = {};
