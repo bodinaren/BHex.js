@@ -60,7 +60,7 @@ BHex.Cube.prototype = BHex.Axial.prototype;
  * @returns {BHex.Axial}
  */
 BHex.Cube.prototype.toAxial = function () {
-	return new BHex.Axial(this.x, this.z || this.y);
+	return new BHex.Axial(this.x, this.z);
 };
 
 /**
