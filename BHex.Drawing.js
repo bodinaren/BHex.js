@@ -92,8 +92,8 @@ BHex.Drawing.Drawing.getCorner = function (center, options, corner) {
 	var offset = (options.orientation == BHex.Drawing.Static.Orientation.PointyTop) ? 90 : 0,
 		angle_deg = 60 * corner + offset,
 		angle_rad = Math.PI / 180 * angle_deg;
-	return new BHex.Drawing.Point(center.x + options.size * Math.cos(angle_rad),
-								  center.y + options.size * Math.sin(angle_rad));
+	return new BHex.Drawing.Point(Math.round(center.x + options.size * Math.cos(angle_rad)),
+								  Math.round(center.y + options.size * Math.sin(angle_rad)));
 };
 
 /**
@@ -114,7 +114,7 @@ BHex.Drawing.Drawing.getCenter = function (axial, options) {
 		y = c.z * options.height * 3/4;
 	}
 	
-	return new BHex.Drawing.Point(x, y);
+	return new BHex.Drawing.Point(Math.round(x), Math.round(y));
 };
 
 /**

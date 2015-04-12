@@ -102,6 +102,17 @@ BHex.Grid = function (radius) {
 					this.hexes.push(new BHex.Hexagon(x, y));
 };
 
+BHex.Grid = function (radius) {
+	this.radius = radius || 0;
+	this.hexes = [];
+	
+	for (var x = -radius; x <= radius; x++)
+		for (var y = -radius; y <= radius; y++)
+			for (var z = -radius; z <= radius; z++)
+				if (x + y + z == 0)
+					this.hexes.push(new BHex.Hexagon(x, y));
+};
+
 /**
  * Get the hexagon at a given axial position.
  * @param {BHex.Axial} a - The axial position to look for.
@@ -167,6 +178,8 @@ BHex.Grid.Search = BHex.Grid.Search || {};
  * @private
  */
 BHex.Grid.Search.Heap = function () {
+	if (!BinaryHeap) throw new Error("BinaryHeap was not found.");
+	
 	return new BinaryHeap(function (node) {
 		return node.F;
 	});
@@ -198,6 +211,60 @@ BHex.Grid.Search.Node.prototype.rescore = function (parent, g, h) {
 	this.G = g;
 	this.H = h || 0;
 	this.F = this.G + this.H;
+};
+
+/**
+ * Get a line of sight between two axial positions.
+ * @param {BHex.Axial} start -  The starting axial position.
+ * @param {BHex.Axial} end -  The ending axial position.
+ * @returns {BHex.Hexagon[]} The hexagons along the line of sight, excluding starting position.
+ */
+BHex.Grid.prototype.getLine = function (start, end) {
+	if (start.compareTo(end)) return [];
+	
+	var cube_lerp = function (a, b, t) {
+			return new BHex.Cube(a.x + (b.x - a.x) * t,
+								 a.y + (b.y - a.y) * t,
+								 a.z + (b.z - a.z) * t);
+		},
+	
+		N = this.getDistance(start, end),
+		line1 = [],
+		line2 = [],
+		
+		cStart = start.toCube(),
+		cEnd1 = end.toCube(),
+		cEnd2 = end.toCube();
+	
+	// Offset the ends slightly to get two lines, handling horizontal and vertical lines (in FlatTop and PointyTop respectively).
+	cEnd1.x -= 1e-6; cEnd1.y -= 1e-6; cEnd1.z += 2e-6;
+	cEnd2.x += 1e-6; cEnd2.y += 1e-6; cEnd2.z -= 2e-6;
+	
+	for (var i = 0; i <= N; i++) {
+		var axial = cube_lerp(cStart, cEnd1, 1.0/N * i).round().toAxial();
+		
+		var hex = this.getHexAt(axial);
+		
+		if (!start.compareTo(hex)) {
+			if (!hex.blocked) {
+				line1.push(hex);
+			} else break;
+		}
+	}
+
+	for (var i = 0; i <= N; i++) {
+		var axial = cube_lerp(cStart, cEnd2, 1.0/N * i).round().toAxial();
+		
+		var hex = this.getHexAt(axial);
+		
+		if (!start.compareTo(hex)) {
+			if (!hex.blocked) {
+				line2.push(hex);
+			} else break;
+		}
+	}
+	
+	return (line1.length > line2.length) ? line1 : line2;
 };
 
 /**
@@ -270,7 +337,7 @@ BHex.Grid.prototype.findPath = function (start, end) {
 		openHeap = new BHex.Grid.Search.Heap(),
 		closedHexes = {},
 		visitedNodes = {};
-
+	
 	openHeap.push(new BHex.Grid.Search.Node(start, null, 0, grid.getDistance(start, end)));
 	
 	while(openHeap.size() > 0) {
