@@ -1,13 +1,14 @@
 # BHex.js
 JavaScript library for working with Hexagons and grids. This library does not draw grids for you, but simply sets it up for you to use your own prefered way of drawing.
 
-## BHex.js
-BHex.js is the core library for creation and calculation of a Hexagon grid.
+## BHex.Core.js
+BHex.Core.js is, as the name suggests, the core library for creation and calculation of a Hexagon grid. All grids are circular, with point 0,0 being the center of the grid.
 
-This will give you a new cricular grid with radius of 3 (excluding the center piece), giving you a total of 37 hexagons (including center piece).
 ```
 var grid = new BHex.Grid(3);
 ```
+This will give you a new cricular grid with radius of 3 (excluding the center piece), giving you a total of 37 hexagons (including center piece).
+
 ![New grid](readme/grid.png)
 
 ### Interia / Blocked hexagons
@@ -75,22 +76,19 @@ grid.getLine(new BHex.Axial(-3, 2), new BHex.Axial(3, -2));
 BHex.Drawing.js will help you prepare your grid for drawing and help you with operations regarding your grid such as finding the hexagon at a specific cursor position.
 
 ```
-// Create the grid as before.
-var grid = new BHex.Grid(2);
-
 // Setup options: Size of the a single side, orientation (or PointyTop) and where the center of the grid should be.
-var options = new BHex.Drawing.Options(30, BHex.Drawing.Static.Orientation.FlatTop, new BHex.Drawing.Point(0, 0));
+var options = new BHex.Drawing.Options(30, BHex.Drawing.Static.Orientation.FlatTop, new BHex.Drawing.Point(400, 300));
 
-// Creates the object for drawing.
-var drawing = new BHex.Drawing.Drawing(grid, options);
+// Create the grid as before.
+var grid = new BHex.Grid(3).forDrawing(options);
 ```
-Each hexagons in your grid will now have a center and an array of 6 corners which you can use for drawing your hexagon grid.
+Each hexagons in your grid will now have a center and an array of 6 corners (points) which you can use for drawing your hexagon grid. Note that all of these points are relative to the center of your grid (400x300 in the above example)!
 
 ### More examples
 
 #### Get a hexagon at a specific pixel position, such as the position of your cursor.
 ```
-drawing.getHexAt(BHex.Drawing.Point(50, 75));
+grid.getHexAtPoint(BHex.Drawing.Point(50, 75));
 ```
 
 ## BinaryHeap.js
@@ -98,7 +96,7 @@ This helper library is an implementation by [bgrins](https://github.com/bgrins/j
 It's needed for the algorithms used in `grid.getRange` and `grid.findPath`. 
 
 ## JSDoc
-Both BHex.js and BHex.Drawing.js is fully commented and documented.
+Both BHex.js and BHex.Drawing.js is fully commented for JSDoc generation.
 
 ## Credits
 All the algorithms are based on Amit Patel's blogpost on [Hexagonal Grids](http://www.redblobgames.com/grids/hexagons/), if you're interested in the theory behind hexagons, be sure to check that out. Also check out his posts [Introduction to A*](http://www.redblobgames.com/pathfinding/a-star/introduction.html) and [Implementation of A*](http://www.redblobgames.com/pathfinding/a-star/implementation.html) to get more into detail on pathfinding (`grid.getRange` and `grid.findPath`). Both of those posts are based on rectangular grids, but the theory is the same for hexagonal grids.
