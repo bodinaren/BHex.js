@@ -1,6 +1,13 @@
 # BHex.js
 JavaScript library for working with Hexagons and grids. This library does not draw grids for you, but simply sets it up for you to use your own prefered way of drawing.
 
+* [BHex.Core.js](https://github.com/bodinaren/BHex.js#bhexcorejs)
+  * [Examples](https://github.com/bodinaren/BHex.js#more-examples)
+* [BHex.Drawing.js](https://github.com/bodinaren/BHex.js#bhexdrawingjs)
+  * [Examples](https://github.com/bodinaren/BHex.js#more-examples-1)
+* [BinaryHeap.js](https://github.com/bodinaren/BHex.js#binaryheapjs)
+* [Credits](https://github.com/bodinaren/BHex.js#credits)
+
 ## BHex.Core.js
 BHex.Core.js is, as the name suggests, the core library for creation and calculation of a Hexagon grid. All grids are circular, with point 0,0 being the center of the grid.
 
@@ -94,9 +101,6 @@ grid.getHexAtPoint(BHex.Drawing.Point(50, 75));
 ## BinaryHeap.js
 This helper library is an implementation by [bgrins](https://github.com/bgrins/javascript-astar), based on an implementation by [Marijn Haverbeke](http://eloquentjavascript.net/1st_edition/appendix2.html).
 It's needed for the algorithms used in `grid.getRange` and `grid.findPath`. 
-
-## JSDoc
-Both BHex.js and BHex.Drawing.js is fully commented for JSDoc generation.
 
 ## Credits
 All the algorithms are based on Amit Patel's blogpost on [Hexagonal Grids](http://www.redblobgames.com/grids/hexagons/), if you're interested in the theory behind hexagons, be sure to check that out. Also check out his posts [Introduction to A*](http://www.redblobgames.com/pathfinding/a-star/introduction.html) and [Implementation of A*](http://www.redblobgames.com/pathfinding/a-star/implementation.html) to get more into detail on pathfinding (`grid.getRange` and `grid.findPath`). Both of those posts are based on rectangular grids, but the theory is the same for hexagonal grids.
